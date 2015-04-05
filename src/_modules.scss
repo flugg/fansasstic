@@ -1,0 +1,150 @@
+
+// -- Modules -----------------------------------------
+
+// Keep track of created modules.
+// ------------------------------
+$_modules: ();
+
+@mixin modules( $names... )
+{
+    @each $name in $names
+    {
+        @include module( $name );
+    }
+}
+
+// ---------------------------
+// Include an existing module.
+// ---------------------------
+
+@mixin module( $query ) {
+
+    @if is-string( $query ) {
+        @extend %#{$query} !optional;
+
+        @if map-get( $_modules, $query ) == 'dynamic' {
+            @each $breakpoint in map-keys( $breakpoints ) {
+                @extend %#{$query}-at-#{$breakpoint} !optional;
+            }
+        }
+
+    } @else if ( is-list( $query ) ) {
+
+        $name: first( $query );
+        $point: nth( $query, 3 );
+        $breakpoint-hit: false;
+
+        @if map-get( $_modules, $name ) == 'static' {
+            @extend %#{$name}-at-#{$point} !optional;
+
+        } @else {
+
+            @each $breakpoint in map-keys( $breakpoints ) {
+
+                $hit-breakpoint: if( $breakpoint == $point, true, $breakpoint-hit );
+
+                @if $hit-breakpoint {
+                    @extend %#{$name}-at-#{$breakpoint} !optional;
+                }
+            }
+        }
+
+    } @else {
+        @error _error( "Mixin 'module' requires a string or list as parameter." );
+    }
+}
+
+// --------------------
+// Create a new module.
+// --------------------
+
+@mixin new-module( $name, $data: null ) {
+
+    @if index( $_modules, $name ) != null {
+        @error _error( "Mixin '#{$name}' already exists." );
+    }
+
+    @if $data == null {
+        $_modules: map-merge( $_modules, ( #{$name}: 'static' ) ) !global;
+
+        @include _static-module( $name ) {
+            @content;
+        }
+
+    } @else {
+        $_modules: map-merge( $_modules, ( #{$name}: 'dynamic' ) ) !global;
+
+        @include _dynamic-module( $name, $data );
+    }
+
+}
+
+// ---------------------------
+// Create a new static module.
+// ---------------------------
+
+@mixin _static-module( $name ) {
+
+    %#{$name} {
+        @content;
+    }
+
+    @each $breakpoint in map-keys( $breakpoints ) {
+
+        %#{$name}-at-#{$breakpoint} {
+            @include at( $breakpoint ) {
+                @content
+            }
+        }
+    }
+}
+
+// ----------------------------
+// Create a new dynamic module.
+// ----------------------------
+
+@mixin _dynamic-module( $name, $data ) {
+
+    %#{$name} {
+        @each $property, $values in $data {
+
+            #{$property}: map-get( $values, 'default' );
+        }
+    }
+
+    @each $breakpoint in map-keys( $breakpoints ) {
+
+        %#{$name}-at-#{$breakpoint} {
+
+            @if $breakpoint == last( map-keys( $breakpoints ) ) {
+
+                @include at( $breakpoint ) {
+                    @each $property, $values in $data {
+                        #{$property}: map-get( $values, $breakpoint );
+                    }
+                }
+
+            } @else {
+                @include at( $breakpoint ) {
+                    @each $property, $values in $data {
+                        @if $breakpoint == last( map-keys( $values ) ) {
+                            #{$property}: map-get( $values, $breakpoint );
+                        }
+                    }
+
+                    $keys: map-keys( $breakpoints );
+                    @for $breakpoint-index from index( $keys, $breakpoint ) through length( $keys ) {
+                        $_breakpoint: nth( map-keys( $breakpoints ), $breakpoint-index );
+                        @include until( $_breakpoint ) {
+                            @each $property, $values in $data {
+                                @if map-has-key( $values, $_breakpoint ) {
+                                    #{$property}: map-get( $values, $breakpoint );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

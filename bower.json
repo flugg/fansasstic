@@ -1,0 +1,19 @@
+{
+  "name": "fansasstic-library",
+  "version": "0.0.9",
+  "authors": [
+    "Flugger <flugged@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "fansasstic-library": "*",
+    "true": "~1.0.1"
+  }
+}

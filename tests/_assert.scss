@@ -1,0 +1,22 @@
+/// Assert wrapper over True's API.
+/// @access public
+///
+/// @param {list} $list - List to be checked.
+/// @param {*} $value - Value to check for.
+/// @return {boolean}
+
+@mixin assert( $description, $assertion )
+{
+    @if map-has-key( $assertion, 'is-true' )
+    {
+        @include assert-true( map-get( $assertion, 'is-true' ), $description );
+    }
+    @else if map-has-key( $assertion, 'is-false' )
+    {
+        @include assert-false( map-get( $assertion, 'is-false' ), $description );
+    }
+    @else if map-has-key( $assertion, 'action' ) and map-has-key( $assertion, 'equal' )
+    {
+        @include assert-equal( map-get( $assertion, 'action' ), map-get( $assertion, 'equal' ), $description );
+    }
+}

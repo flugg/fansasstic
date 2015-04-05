@@ -1,0 +1,80 @@
+
+// -- Components --------------------------------------
+$_selector: &;
+$_modifier: false;
+
+// ----------------------------------------------------
+//
+// ----------------------------------------------------
+
+@mixin Component( $name ) {
+    $_selector: & !global;
+
+    .#{$name} {
+        @content;
+    }
+}
+
+// ----------------------------------------------------
+//
+// ----------------------------------------------------
+
+@mixin Element( $name ) {
+    @if ( $_modifier == false ) {
+        $_selector: & !global;
+
+        @at-root #{$_selector}-#{$name} {
+            @content;
+        }
+
+    } @else {
+
+        @at-root #{&} #{$_selector}-#{$name} {
+            @content;
+        }
+    }
+}
+
+// ----------------------------------------------------
+//
+// ----------------------------------------------------
+
+@mixin Modifier( $name ) {
+
+    $_temp: $_selector;
+
+    @if ( $_modifier == false ) {
+        $_selector: & !global;
+    }
+
+    $_modifier: true !global;
+
+    @at-root #{$_selector}--#{$name} {
+        @content;
+    }
+
+    $_modifier: false !global;
+    $_selector: $_temp !global;
+}
+
+// ----------------------------------------------------
+//
+// ----------------------------------------------------
+
+@mixin Stance( $name ) {
+    @at-root #{&}--is-#{$name} {
+        @content;
+    }
+}
+
+// ----------------------------------------------------
+//
+// ----------------------------------------------------
+
+@mixin Selector( $selectors... ) {
+    @each $selector in $selectors {
+        &:#{$selector} {
+            @content;
+        }
+    }
+}

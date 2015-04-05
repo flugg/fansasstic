@@ -12,8 +12,10 @@
     "test",
     "tests"
   ],
+  "dependencies": {
+    "fansasstic-library": "*"
+  },
   "devDependencies": {
-    "fansasstic-library": "*",
     "true": "~1.0.1"
   }
 }

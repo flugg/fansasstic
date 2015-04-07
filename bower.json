@@ -16,6 +16,7 @@
     "fansasstic-library": "*"
   },
   "devDependencies": {
-    "true": "~1.0.1"
+    "true": "~1.0.1",
+    "fansasstic-boilerplate": "*"
   }
 }

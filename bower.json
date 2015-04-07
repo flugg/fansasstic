@@ -13,10 +13,10 @@
     "tests"
   ],
   "dependencies": {
-    "fansasstic-library": "*"
+    "fansasstic-library": "*",
+    "fansasstic-boilerplate": "*"
   },
   "devDependencies": {
-    "true": "~1.0.1",
-    "fansasstic-boilerplate": "*"
+    "true": "~1.0.1"
   }
 }

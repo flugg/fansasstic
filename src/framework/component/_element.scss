@@ -1,0 +1,23 @@
+@mixin element( $name )
+{
+    $_temp: $_selector;
+
+    @if ( $_modifier == false and $_element == false ) {
+        $_element: true !global;
+        $_selector: & !global;
+
+        @at-root #{$_selector}-#{$name} {
+            @content;
+        }
+
+    } @else {
+        $_element: true !global;
+
+        @at-root #{&} #{$_selector}-#{$name} {
+            @content;
+        }
+    }
+
+    $_element: false !global;
+    $_selector: $_temp !global;
+}

@@ -1,0 +1,17 @@
+@mixin modifier( $name )
+{
+    $_temp: $_selector;
+
+    @if ( $_modifier == false ) {
+        $_selector: & !global;
+    }
+
+    $_modifier: true !global;
+
+    @at-root #{$_selector}--#{$name} {
+        @content;
+    }
+
+    $_modifier: false !global;
+    $_selector: $_temp !global;
+}

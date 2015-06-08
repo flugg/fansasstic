@@ -1,0 +1,7 @@
+@mixin between( $atPoint, $untilPoint ) {
+    $atPoint: if( type-of( $atPoint ) == 'number', $atPoint, breakpoint( $atPoint ) );
+    $untilPoint: if( type-of( $untilPoint ) == 'number', $untilPoint, breakpoint( $untilPoint ) );
+    @media ( min-width: $atPoint ) and ( max-width: $untilPoint ) {
+        @content;
+    }
+}

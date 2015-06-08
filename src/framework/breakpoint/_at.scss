@@ -1,0 +1,6 @@
+@mixin at( $point ) {
+    $point: if( type-of( $point ) == 'number', $point, breakpoint( $point ) );
+    @media ( min-width: $point ) {
+        @content;
+    }
+}

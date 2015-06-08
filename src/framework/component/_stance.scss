@@ -1,0 +1,6 @@
+@mixin stance( $name )
+{
+    @at-root #{&}--is-#{$name} {
+        @content;
+    }
+}

@@ -1,0 +1,4 @@
+@include set( $key, $value )
+{
+    @return push( $_configuration, $key, $value );
+}

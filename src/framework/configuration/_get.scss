@@ -1,0 +1,6 @@
+$_configuration: ();
+
+@include get( $key )
+{
+    @return pull( $_configuration, $key );
+}

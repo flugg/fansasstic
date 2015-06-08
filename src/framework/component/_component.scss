@@ -1,0 +1,12 @@
+$_selector: &;
+$_element: false;
+$_modifier: false;
+
+@mixin component( $name )
+{
+    $_selector: & !global;
+
+    .#{$name} {
+        @content;
+    }
+}

@@ -13,7 +13,7 @@
     "tests"
   ],
   "dependencies": {
-    "fansasstic-library": "*"
+    "fansasstic-library": "~0.9"
   },
   "devDependencies": {
     "true": "~1.0.1"

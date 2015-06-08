@@ -1,4 +1,4 @@
-@include set( $key, $value )
+@mixin set( $key, $value )
 {
-    @return push( $_configuration, $key, $value );
+    $_configuration: push( $_configuration, $key, $value ) !global;
 }

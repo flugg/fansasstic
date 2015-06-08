@@ -1,6 +1,6 @@
 $_configuration: ();
 
-@include get( $key )
+@function get( $key )
 {
     @return pull( $_configuration, $key );
 }

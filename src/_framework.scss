@@ -1,8 +1,23 @@
 // Import dependencies
-@import '../../../bower_components/fansasstic-library/src/manifest';
+@import '../../../bower_components/fansasstic-library/src/library';
 
 // Import modules
 @import 'framework/configuration';
 @import 'framework/breakpoint';
 @import 'framework/module';
 @import 'framework/component';
+
+@mixin font-face($name, $file-name)
+{
+    @font-face
+    {
+        font-family: $name;
+        src: url("../fonts/#{$file-name}.eot");
+        src: url("../fonts/#{$file-name}.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/#{$file-name}.woff") format("woff"),
+        url("../fonts/#{$file-name}.ttf") format("truetype"),
+        url("../fonts/#{$file-name}.svg##{$file-name}") format("svg");
+        font-weight: normal;
+        font-style: normal;
+    }
+}

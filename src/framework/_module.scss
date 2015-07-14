@@ -114,6 +114,8 @@ $_modules: ();
 
     @each $breakpoint in map-keys( $breakpoints ) {
 
+        $match-found: false;
+
         %#{$name}-at-#{$breakpoint} {
 
             @if $breakpoint == last( map-keys( $breakpoints ) ) {
@@ -135,10 +137,11 @@ $_modules: ();
                     $keys: map-keys( $breakpoints );
                     @for $breakpoint-index from index( $keys, $breakpoint ) through length( $keys ) {
                         $_breakpoint: nth( map-keys( $breakpoints ), $breakpoint-index );
-                        @include until( $_breakpoint ) {
+                        @include until( breakpoint( $_breakpoint ) ) {
                             @each $property, $values in $data {
-                                @if map-has-key( $values, $_breakpoint ) {
+                                @if map-has-key( $values, $_breakpoint ) and $_breakpoint != $breakpoint and not $match-found {
                                     #{$property}: map-get( $values, $breakpoint );
+                                    $match-found: true;
                                 }
                             }
                         }

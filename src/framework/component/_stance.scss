@@ -1,6 +1,14 @@
 @mixin stance( $name )
 {
-    @at-root #{&}--is-#{$name} {
+    $_event: true !global;
+    $_temp: $_selector;
+    $_selector: & !global;
+
+    @at-root #{&}.is-#{$name} {
         @content;
     }
+
+    $_event: false !global;
+
+    $_selector: $_temp !global;
 }

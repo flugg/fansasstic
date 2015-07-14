@@ -2,7 +2,12 @@
 {
     $_temp: $_selector;
 
-    @if ( $_modifier == false and $_element == false ) {
+    @if $_event
+    {
+        $_selector: & !global;
+    }
+
+    @if ( $_modifier == false and $_element == false and $_event == false ) {
         $_element: true !global;
         $_selector: & !global;
 
@@ -13,11 +18,34 @@
     } @else {
         $_element: true !global;
 
-        @at-root #{&} #{$_selector}-#{$name} {
+        @at-root #{&} #{$_temp}-#{$name} {
             @content;
         }
     }
 
     $_element: false !global;
+    $_selector: $_temp !global;
+}
+
+@mixin on( $event )
+{
+    $_event: true !global;
+    $_temp: $_selector;
+    $_selector: & !global;
+
+    @if $event == 'click'
+    {
+        $event: 'active';
+    }
+
+    $_event: true !global;
+
+    &:#{$event}
+    {
+        @content;
+    }
+
+    $_event: false !global;
+
     $_selector: $_temp !global;
 }

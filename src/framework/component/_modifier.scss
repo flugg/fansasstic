@@ -8,8 +8,17 @@
 
     $_modifier: true !global;
 
-    @at-root #{$_selector}--#{$name} {
-        @content;
+    @if $_event
+    {
+        @at-root #{$_selector}--#{$name} {
+            @content;
+        }
+    }
+    @else
+    {
+        @at-root #{$_selector}--#{$name} {
+            @content;
+        }
     }
 
     $_modifier: false !global;

@@ -1,13 +1,19 @@
-$_selector: &;
-$_event: false;
-$_element: false;
-$_modifier: false;
-
-@mixin component( $name )
-{
-    $_selector: & !global;
-
-    .#{$name} {
+///
+/// @access public
+///
+/// @param {string} $name -
+@mixin component( $name ) {
+    @include _component( $name ) {
         @content;
+    }
+}
+
+///
+/// @access private
+@mixin _component( $name ) {
+    @at-root .#{$name} {
+        @include _selector-append( $name ) {
+            @content;
+        }
     }
 }

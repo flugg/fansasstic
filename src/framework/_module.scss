@@ -19,6 +19,8 @@ $_modules: ();
 
 @mixin module( $query ) {
 
+    $breakpoints: get( '_breakpoints' );
+
     @if is-string( $query ) {
         @extend %#{$query} !optional;
 
@@ -85,6 +87,8 @@ $_modules: ();
 
 @mixin _static-module( $name ) {
 
+    $breakpoints: get( '_breakpoints' );
+
     %#{$name} {
         @content;
     }
@@ -105,10 +109,12 @@ $_modules: ();
 
 @mixin _dynamic-module( $name, $data ) {
 
+    $breakpoints: get( '_breakpoints' );
+
     %#{$name} {
         @each $property, $values in $data {
 
-            #{$property}: map-get( $values, 'default' );
+            #{$property}: if( is-map( $values ), map-get( $values, 'default' ), $values );
         }
     }
 
@@ -122,7 +128,7 @@ $_modules: ();
 
                 @include at( $breakpoint ) {
                     @each $property, $values in $data {
-                        #{$property}: map-get( $values, $breakpoint );
+                        #{$property}: if( is-map( $values ), map-get( $values, $breakpoint ), $values );
                     }
                 }
 
@@ -130,7 +136,7 @@ $_modules: ();
                 @include at( $breakpoint ) {
                     @each $property, $values in $data {
                         @if $breakpoint == last( map-keys( $values ) ) {
-                            #{$property}: map-get( $values, $breakpoint );
+                            #{$property}: if( is-map( $values ), map-get( $values, $breakpoint ), $values );
                         }
                     }
 

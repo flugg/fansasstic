@@ -1,26 +1,30 @@
-@mixin modifier( $name )
-{
-    $_temp: $_selector;
-
-    @if ( $_modifier == false ) {
-        $_selector: & !global;
+///
+/// @access public
+///
+/// @param {string} $name -
+@mixin modifier( $name ) {
+    @include _modifier( $name ) {
+        @content;
     }
+}
 
-    $_modifier: true !global;
+///
+/// @access private
+@mixin _modifier( $name ) {
+    @if $_selector-nest {
 
-    @if $_event
-    {
-        @at-root #{$_selector}--#{$name} {
-            @content;
+        @include _selector-block( true ) {
+            @at-root &.#{last( $_selector )}--#{$name} {
+                @content;
+            }
+        }
+
+    } @else {
+
+        @include _selector-block( true ) {
+            @at-root &--#{$name} {
+                @content;
+            }
         }
     }
-    @else
-    {
-        @at-root #{$_selector}--#{$name} {
-            @content;
-        }
-    }
-
-    $_modifier: false !global;
-    $_selector: $_temp !global;
 }

@@ -1,0 +1,20 @@
+@include test-module( 'Components' ) {
+
+    @include test( 'components' ) {
+
+        @include assert( 'Test syntax' ) {
+
+            @include input {
+                @include component( 'Test' ) {
+                    width: 1px;
+                }
+            }
+
+            @include expect {
+                .Test22 {
+                    width: 1px;
+                }
+            }
+        }
+    }
+}

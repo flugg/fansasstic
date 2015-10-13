@@ -1,8 +1,50 @@
-@mixin selector( $selectors... )
-{
-    @each $selector in $selectors {
-        &:#{$selector} {
-            @content;
-        }
-    }
+$_selector: ();
+$_selector-nest: false;
+
+///
+/// @access private
+///
+/// @param {bool} $nest -
+@mixin _selector-block( $nest ) {
+    $previous-nest: $_selector-nest;
+    $_selector-nest: $nest !global;
+
+    @content;
+
+    $_selector-nest: $previous-nest !global;
+}
+
+///
+/// @access private
+///
+/// @param {string} $selector -
+@mixin _selector-nest( $selector ) {
+    $prev-selector: $_selector;
+    $_selector: append( $_selector, $selector ) !global;
+
+    @content;
+
+    $_selector: $prev-selector !global;
+}
+
+///
+/// @access private
+///
+/// @param {string} $selector -
+@mixin _selector-append( $selector ) {
+    $prev-selector: $_selector;
+    $_selector: if( length( $_selector ) == 0, $selector, _selector-append( $selector ) ) !global;
+
+    @content;
+
+    $_selector: $prev-selector !global;
+}
+
+///
+/// @access private
+///
+/// @param {string} $selector -
+/// @return {string}
+@function _selector-append( $selector ) {
+    @return replace-at( $_selector, length( $_selector ), "#{last( $_selector )}#{$selector}" );
 }

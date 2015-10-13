@@ -1,14 +1,30 @@
-@mixin stance( $name )
-{
-    $_event: true !global;
-    $_temp: $_selector;
-    $_selector: & !global;
-
-    @at-root #{&}.is-#{$name} {
+///
+/// @access public
+///
+/// @param {string} $name -
+@mixin stance( $name ) {
+    @include _stance( $name ) {
         @content;
     }
+}
 
-    $_event: false !global;
+///
+/// @access private
+@mixin _stance( $name ) {
+    @include _selector-block( true ) {
+        @at-root &.is-#{$name} {
+            @content;
+        }
+    }
+}
 
-    $_selector: $_temp !global;
+@mixin on( $events... ) {
+    @each $event in $events {
+        $event: if( $event == 'click', 'active', $event );
+        @include _selector-block( true ) {
+            @at-root &:#{$event} {
+                @content;
+            }
+        }
+    }
 }

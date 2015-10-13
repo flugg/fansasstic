@@ -1,0 +1,7 @@
+@mixin set-breakpoints( $value ) {
+    @include set( '_breakpoints', $value );
+}
+
+@function breakpoint( $name ) {
+    @return get( '_breakpoints.#{$name}' );
+}

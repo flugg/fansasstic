@@ -1,51 +1,38 @@
-@mixin element( $name )
-{
-    $_temp: $_selector;
-
-    @if $_event
-    {
-        $_selector: & !global;
+///
+/// @access public
+///
+/// @param {string} $name -
+@mixin element( $name ) {
+    @include _element( $name ) {
+        @content;
     }
+}
 
-    @if ( $_modifier == false and $_element == false and $_event == false ) {
-        $_element: true !global;
-        $_selector: & !global;
+///
+/// @access private
+@mixin _element( $name ) {
+    @if $_selector-nest {
 
-        @at-root #{$_selector}-#{$name} {
-            @content;
+        @include _selector-block( false ) {
+            $selector: "#{last( $_selector )}-#{$name}";
+
+            @at-root & .#{$selector} {
+                @include _selector-nest( $selector ) {
+                    @content;
+                }
+            }
         }
 
     } @else {
-        $_element: true !global;
 
-        @at-root #{&} #{$_temp}-#{$name} {
-            @content;
+        @include _selector-block( false ) {
+            $selector: "-#{$name}";
+
+            @at-root &#{$selector} {
+                @include _selector-append( $selector ) {
+                    @content;
+                }
+            }
         }
     }
-
-    $_element: false !global;
-    $_selector: $_temp !global;
-}
-
-@mixin on( $event )
-{
-    $_event: true !global;
-    $_temp: $_selector;
-    $_selector: & !global;
-
-    @if $event == 'click'
-    {
-        $event: 'active';
-    }
-
-    $_event: true !global;
-
-    &:#{$event}
-    {
-        @content;
-    }
-
-    $_event: false !global;
-
-    $_selector: $_temp !global;
 }

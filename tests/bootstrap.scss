@@ -1,0 +1,11 @@
+// Import dependencies
+@import '../bower_components/true/sass/true';
+
+// Import library source
+@import '../src/framework';
+
+// Import test suite
+@import 'framework/component';
+
+// Run test report in console
+@include report;

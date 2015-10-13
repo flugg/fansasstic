@@ -16,6 +16,6 @@
     "fansasstic-library": "~0.9"
   },
   "devDependencies": {
-    "true": "~1.0.1"
+    "true": "~2.0.2"
   }
 }

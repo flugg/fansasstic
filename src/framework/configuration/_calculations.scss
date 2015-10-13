@@ -1,0 +1,13 @@
+@mixin set-calculation( $name, $calculation ) {
+    $calculations: ();
+    @if map-has-key( $_configuration, '_calculations' ) {
+        $calculations: push( get( '_calculations' ), $name, $calculation );
+    } @else {
+        $calculations: ( #{$name}: $calculation );
+    }
+    @include set( '_calculations', $calculations );
+}
+
+@function calculation( $name ) {
+    @return get( '_calculations.#{$name}' );
+}
